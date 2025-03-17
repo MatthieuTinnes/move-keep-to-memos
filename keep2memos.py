@@ -21,7 +21,7 @@ def array_to_markdown_checklist(items):
 
 def post_memo(content):
     url = INSTANCE + "/api/v1/memos"
-    
+
     headers = {
         "Authorization": f"Bearer {TOKEN}",
         "Content-Type": "application/json"
@@ -51,7 +51,7 @@ def post_memo(content):
 
 def create_resource(file_path, type):
     url = INSTANCE + "/api/v1/resources"
-    
+
     headers = {
         "Authorization": f"Bearer {TOKEN}",
         "Content-Type": "application/json"
@@ -79,7 +79,7 @@ def create_resource(file_path, type):
 
 def patch_memo(id, date, archived):
     url = f"{INSTANCE}/api/v1/memos/{id}"
-    
+
     headers = {
         "Authorization": f"Bearer {TOKEN}",
         "Content-Type": "application/json"
@@ -87,9 +87,9 @@ def patch_memo(id, date, archived):
     status = "ACTIVE"
     if(archived):
         status = 'ARCHIVED'
-    
+
     data = {
-        "rowStatus": status,
+        "state": status,
         "createTime": date
     }
 
@@ -114,12 +114,12 @@ def mapResourceToMemoResource(resource,memoId):
     }
 def setMemosResources(memoId, resources):
     url = f"{INSTANCE}/api/v1/memos/{memoId}/resources"
-    
+
     headers = {
         "Authorization": f"Bearer {TOKEN}",
         "Content-Type": "application/json"
     }
-    
+
     data = {
         "resources": resources
     }
@@ -141,7 +141,7 @@ def process_json_files_in_folder(folder_path):
 
             with open(file_path, 'r', encoding='utf-8') as file:
                 data = json.load(file)
-                
+
                 title = data.get("title", "No Title")
                 text_content = data.get("textContent", "")
                 if(text_content == ""):
@@ -176,7 +176,7 @@ def process_json_files_in_folder(folder_path):
                         if resource:
                             memoResource = mapResourceToMemoResource(resource,memoId)
                             resources.append(memoResource)
-                    if(len(resources) > 1 ): 
+                    if(len(resources) > 1 ):
                         setMemosResources(memoId,resources)
 
 # Define the argument parser
@@ -198,7 +198,7 @@ def main():
 
     print(f"Processing instance: {INSTANCE}")
     print(f"Using token: {TOKEN}")
-    
+
     # Process the folder
     process_json_files_in_folder(DEFAULT_TAKEOUT_FOLDER)
     print('Import successful !')
